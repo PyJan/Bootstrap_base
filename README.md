@@ -1,1 +1,2 @@
 Bootstrap_base
+Everything connected to flask-bootstrap
