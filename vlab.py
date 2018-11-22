@@ -8,5 +8,9 @@ bootstrap = Bootstrap(app)
 def main():
     return render_template('vlab.html')
 
+@app.route('/selection/<product>')
+def selection(product):
+    return render_template('products/'+product+'.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
