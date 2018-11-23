@@ -12,5 +12,9 @@ def main():
 def selection(product):
     return render_template('products/'+product+'.html')
 
+@app.route('/basket')
+def basket():
+    return render_template('basket.html')
+
 if __name__ == "__main__":
     app.run(debug=True)

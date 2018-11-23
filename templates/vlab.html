@@ -14,6 +14,7 @@
             <p class="lead">Viki's Lab for decorative items</p>
         </div>
     </div>
+    {% block middlepart %}
     <div class="row">
         <div class="col-xs-3"> 
             <ul class="nav nav-tabs nav-stacked">
@@ -34,9 +35,10 @@
             {% endblock product %}
         </div>
         <div class="col-xs-3">
-            Buy and news
+            <a name="basket" id="basket" class="btn btn-primary btn-lg" href="{{url_for('basket')}}" role="button">Your Basket</a>
         </div>
     </div>
+    {% endblock middlepart %}
     <div class="row">
         <div class="col-xs-12">
             <div style="text-align: center">footnote</div> 
