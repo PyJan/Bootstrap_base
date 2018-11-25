@@ -1,0 +1,10 @@
+{% extends 'vlab.html' %}
+{% block middlepart %}
+<div class="row">
+    <div class="col-xs-3 col-xs-offset-4">
+        <form method='POST' action="{{url_for('signup')}}">
+            {{wtf.quick_form(signupform)}}
+        </form>
+    </div>
+</div>
+{% endblock middlepart %}

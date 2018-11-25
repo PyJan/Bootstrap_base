@@ -7,6 +7,7 @@
 </head>
 <body>
     {% extends 'bootstrap/base.html' %}
+    {% import 'bootstrap/wtf.html' as wtf %}
     {% block content %}
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
@@ -39,7 +40,7 @@
         </div>
     </div>
     {% endblock middlepart %}
-    <div class="navbar navbar-fixed-bottom">
+    <div class="navbar">
         <div class="col-xs-12">
             <div style="text-align: center">footnote</div> 
         </div>
