@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from flask_sqlalchemy import SQLAlchemy
@@ -18,6 +18,8 @@ db = SQLAlchemy(app)
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True)
+    email = db.Column(db.String(50))
+    password = db.Column(db.String(50))
 
 class LoginForm(FlaskForm):
     username = StringField('User name: ', validators=[length(min=3, max=30)])
@@ -50,23 +52,39 @@ def basket():
 def login():
     loginform = LoginForm()
     if loginform.validate_on_submit():
-        user = User.query.filter_by(username='Jan').first()
-        login_user(user)
-        return redirect(url_for('loggedin'))
+        user = User.query.filter_by(username=loginform.username.data).first()
+        if user is None:
+            loginform.username.errors.append('Wrong user name')
+        else:
+            if user.password == loginform.password.data:
+                login_user(user)
+                return redirect(url_for('main'))
+            else:
+                loginform.password.errors.append('Wrong password')        
     return render_template('login.html', loginform=loginform)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     signupform = SignupForm()
     if signupform.validate_on_submit():
-        return 'successfully signed up'
+        user = User.query.filter_by(username=signupform.username.data).first()
+        if user is None:
+            user = User(username=signupform.username.data,
+                        email=signupform.email.data,
+                        password=signupform.password.data)
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            return redirect('/')
+        else:
+            signupform.username.errors.append('This user already exists')
     return render_template('signup.html', signupform=signupform)
 
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return 'logged out'
+    return redirect(url_for('main'))
 
 @app.route('/loggedin')
 @login_required

@@ -36,6 +36,18 @@
             {% endblock product %}
         </div>
         <div class="col-xs-3">
+            {% if session.logged_in %}
+                <h3>Greetings {{session.username}}</h3>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+            <h3>Hi, {{ current_user.username }}</h3>
+            <h5><a href="{{url_for('logout')}}">Log out</a> </h5>
+            {% else %}
+            <h5>
+                <a href="{{url_for('login')}}">Log in</a> or
+                <a href="{{url_for('signup')}}">Sign up</a>          
+            </h5>            
+            {% endif %}
             <a name="basket" id="basket" class="btn btn-primary btn-lg" href="{{url_for('basket')}}" role="button">Your Basket</a>
         </div>
     </div>
