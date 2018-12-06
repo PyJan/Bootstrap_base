@@ -21,6 +21,14 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50))
     password = db.Column(db.String(50))
 
+class Orders(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer)
+    itemid = db.Column(db.Integer)
+    volume = db.Column(db.Integer)
+    paid = db.Column(db.Boolean)
+    orderdate = db.Column(db.DateTime)
+
 class LoginForm(FlaskForm):
     username = StringField('User name: ', validators=[length(min=3, max=30)])
     password = PasswordField('Password: ', validators=[length(min=5, max=30)])
@@ -46,6 +54,9 @@ def selection(product):
 
 @app.route('/basket')
 def basket():
+    print(current_user.username)
+    x = Orders.query.filter_by(userid=1).all()
+    print(x)
     return render_template('basket.html')
 
 @app.route('/login', methods=['GET', 'POST'])
