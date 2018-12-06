@@ -55,9 +55,9 @@ def selection(product):
 @app.route('/basket')
 def basket():
     print(current_user.username)
-    x = Orders.query.filter_by(userid=1).all()
-    print(x)
-    return render_template('basket.html')
+    basket = Orders.query.filter_by(userid=current_user.id).all()
+    #print(basket.itemid, basket.paid)
+    return render_template('basket.html', basket=basket)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

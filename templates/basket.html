@@ -4,22 +4,19 @@
 <table class="table table-hover table-condensed text-center">
     <thead>
         <tr>
-            <th class="text-center">Item</th>
-            <th class="text-center">Price</th>
-            <th class='text-center'>Quantity</th>
+            <th class="text-center">Item id</th>
+            <th class="text-center">User id</th>
+            <th class='text-center'>Volume</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td scope="row">Red Lotion</td>
-            <td>650</td>
-            <td>1</td>
-        </tr>
-        <tr>
-            <td scope="row">Yellow Lotion</td>
-            <td>980</td>
-            <td>1</td>
-        </tr>
+            {% for b in basket %}
+            <tr>
+            <td scope="row">{{b.itemid}}</td>
+            <td>{{b.userid}}</td>
+            <td>{{b.volume}}</td>
+            </tr>
+            {% endfor %}
     </tbody>
 </table>
 
