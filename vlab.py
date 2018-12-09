@@ -16,18 +16,55 @@ loginmanager.init_app(app)
 db = SQLAlchemy(app)
 
 class User(UserMixin, db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True)
     email = db.Column(db.String(50))
     password = db.Column(db.String(50))
 
+    orders = db.relationship('Orders', backref='user')
+
+    def __repr__(self):
+        return '<user {0}: id={1}, email={2}, password={3}>'.format(
+            self.username,
+            self.id,
+            self.email,
+            self.password
+        )
+
 class Orders(db.Model):
+    __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
-    userid = db.Column(db.Integer)
-    itemid = db.Column(db.Integer)
+    userid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    itemid = db.Column(db.Integer, db.ForeignKey('items.id'), nullable=False)
     volume = db.Column(db.Integer)
     paid = db.Column(db.Boolean)
-    orderdate = db.Column(db.DateTime)
+
+    def __repr__(self):
+        return '<order number {0}: userid={1}, itemid={2}, volume={3}>'.format(
+            self.id,
+            self.userid,
+            self.itemid,
+            self.volume
+        )
+
+class Items(db.Model):
+    __items__ = 'items'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+
+    orders = db.relationship('Orders', backref='item')
+
+    def __repr__(self):
+        return '<item {0}: id={1}>'.format(self.name, self.id)
+
+
+
+class Prices(db.Model):
+    __tablename__ = 'prices'
+    id = db.Column(db.Integer, primary_key=True)
+    itemid = db.Column(db.Integer)
+    price = db.Column(db.Integer)
 
 class LoginForm(FlaskForm):
     username = StringField('User name: ', validators=[length(min=3, max=30)])
