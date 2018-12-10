@@ -5,7 +5,9 @@
     <thead>
         <tr>
             <th class="text-center">Item id</th>
+            <th class="text-center">Item</th>
             <th class="text-center">User id</th>
+            <th class="text-center">User</th>
             <th class='text-center'>Volume</th>
         </tr>
     </thead>
@@ -13,7 +15,9 @@
             {% for b in basket %}
             <tr>
             <td scope="row">{{b.itemid}}</td>
+            <td>{{b.item.name}}</td>
             <td>{{b.userid}}</td>
+            <td>{{b.user.username}}</td>
             <td>{{b.volume}}</td>
             </tr>
             {% endfor %}

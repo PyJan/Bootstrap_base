@@ -89,9 +89,9 @@ def main():
 def selection(product):
     return render_template('products/'+product+'.html')
 
-@app.route('/basket')
+@app.route('/basket', methods=['GET', 'POST'])
 def basket():
-    print(current_user.username)
+    print(request.args.get('product'))
     basket = Orders.query.filter_by(userid=current_user.id).all()
     #print(basket.itemid, basket.paid)
     return render_template('basket.html', basket=basket)
