@@ -91,7 +91,12 @@ def selection(product):
 
 @app.route('/basket', methods=['GET', 'POST'])
 def basket():
-    print(request.args.get('product'))
+    if request.args.get('product'):
+        chosen_product = Items.query.filter_by(name=request.args.get('product')).first()
+        user = User.query.filter_by(id=current_user.id).first()
+        issued_order = Orders(item=chosen_product, user=user, volume=1)
+        db.session.add(issued_order)
+        db.session.commit()
     basket = Orders.query.filter_by(userid=current_user.id).all()
     #print(basket.itemid, basket.paid)
     return render_template('basket.html', basket=basket)
@@ -138,6 +143,11 @@ def logout():
 @login_required
 def loggedin():
     return 'current user is {0}'.format(current_user.username)
+
+@app.route('/showbase')
+def showbase():
+    signupform = SignupForm()
+    return render_template('base.html', userform=signupform)
 
 if __name__ == "__main__":
     app.run(debug=True)
