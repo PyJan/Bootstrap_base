@@ -97,6 +97,10 @@ def basket():
         issued_order = Orders(item=chosen_product, user=user, volume=1)
         db.session.add(issued_order)
         db.session.commit()
+    if request.args.get('deletion'):
+        product_for_removal = Orders.query.get(int(request.args.get('deletion')))
+        db.session.delete(product_for_removal)
+        db.session.commit()
     basket = Orders.query.filter_by(userid=current_user.id).all()
     #print(basket.itemid, basket.paid)
     return render_template('basket.html', basket=basket)
