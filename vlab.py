@@ -38,7 +38,13 @@ class Orders(db.Model):
     userid = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     itemid = db.Column(db.Integer, db.ForeignKey('items.id'), nullable=False)
     volume = db.Column(db.Integer)
+    ordered = db.Column(db.Boolean)
     paid = db.Column(db.Boolean)
+    delivered = db.Column(db.Boolean)
+    orderdate = db.Column(db.DATETIME)
+    paydate = db.Column(db.DATETIME)
+    deliverydate = db.Column(db.DATETIME)
+
 
     def __repr__(self):
         return '<order number {0}: userid={1}, itemid={2}, volume={3}>'.format(
@@ -65,6 +71,8 @@ class Prices(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     itemid = db.Column(db.Integer)
     price = db.Column(db.Integer)
+    validfrom = db.Column(db.DATETIME)
+    validto = db.Column(db.DATETIME)
 
 class LoginForm(FlaskForm):
     username = StringField('User name: ', validators=[length(min=3, max=30)])
@@ -104,6 +112,10 @@ def basket():
     basket = Orders.query.filter_by(userid=current_user.id).all()
     #print(basket.itemid, basket.paid)
     return render_template('basket.html', basket=basket)
+
+@app.route('/myorder', methods=['GET', 'POST'])
+def myorder():
+    return render_template('myorder.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

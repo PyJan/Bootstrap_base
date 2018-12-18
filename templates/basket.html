@@ -21,13 +21,13 @@
             <td>{{b.item.name}}</td>
             <td>{{b.userid}}</td>
             <td>{{b.user.username}}</td>
-            <td><input type="text" value={{b.volume}} size="1" onblur="alert('on blur!')"></td>
+            <td><input type="text" value={{b.volume}} size="1"></td>
             <td><a href="{{url_for('basket', deletion=b.id)}}" style="text-decoration: none"><big>&times;</big></a></td>
             </tr>
             {% endfor %}
     </tbody>
 </table>
 
-<a name="Savebasket" id="Savebasket" class="btn btn-primary btn-lg" href="#" role="button">Save your basket</a>
+<a name="Savebasket" id="Savebasket" class="btn btn-primary btn-lg" href="{{url_for('myorder')}}" role="button">Order basket</a>
 
 {% endblock product %}
