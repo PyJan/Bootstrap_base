@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import length, email
+import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
@@ -109,13 +110,24 @@ def basket():
         product_for_removal = Orders.query.get(int(request.args.get('deletion')))
         db.session.delete(product_for_removal)
         db.session.commit()
-    basket = Orders.query.filter_by(userid=current_user.id).all()
+    basket = Orders.query.filter(
+        Orders.userid==current_user.id,
+        db.or_(Orders.ordered.is_(None),
+        Orders.ordered==0)).all()
     #print(basket.itemid, basket.paid)
     return render_template('basket.html', basket=basket)
 
 @app.route('/myorder', methods=['GET', 'POST'])
 def myorder():
-    return render_template('myorder.html')
+    myorder = Orders.query.filter(
+        Orders.userid==current_user.id,
+        db.or_(Orders.ordered.is_(None),
+        Orders.ordered==0)).all()
+    for item in myorder:
+        item.ordered = True
+        item.orderdate = datetime.datetime.now()
+    db.session.commit()
+    return render_template('myorder.html', myorder=myorder)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
