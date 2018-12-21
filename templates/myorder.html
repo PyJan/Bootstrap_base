@@ -4,12 +4,13 @@ You have ordered:
 <ul>
     {% for item in myorder %}
     <li>
-        {{item.volume}} {{item.item.name}}
+        {{item.volume}} {{item.item.name}} for {{item.item.pricetags[0].price}},-
     </li>
     {% endfor %}
 </ul>
-
-The list was sent to your email.<br>
+Total price: {{totalprice}},-. 
+<br><br>
+The order for was sent to your email.<br>
 Viki will contact you once she manufactures it.<br><br>
 
 <a href="{{url_for('main')}}">Main page</a>

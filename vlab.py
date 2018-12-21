@@ -66,14 +66,15 @@ class Items(db.Model):
         return '<item {0}: id={1}>'.format(self.name, self.id)
 
 
-
 class Prices(db.Model):
     __tablename__ = 'prices'
     id = db.Column(db.Integer, primary_key=True)
-    itemid = db.Column(db.Integer)
+    itemid = db.Column(db.Integer, db.ForeignKey('items.id'), nullable=False)
     price = db.Column(db.Integer)
     validfrom = db.Column(db.DATETIME)
     validto = db.Column(db.DATETIME)
+
+    item = db.relationship('Items', backref='pricetags')
 
 class LoginForm(FlaskForm):
     username = StringField('User name: ', validators=[length(min=3, max=30)])
@@ -114,8 +115,13 @@ def basket():
         Orders.userid==current_user.id,
         db.or_(Orders.ordered.is_(None),
         Orders.ordered==0)).all()
-    #print(basket.itemid, basket.paid)
-    return render_template('basket.html', basket=basket)
+    return render_template('basket.html', basket=basket, totalprice=totalprice(basket))
+
+def totalprice(basket):
+    totalprice = 0
+    for b in basket:
+        totalprice += b.item.pricetags[0].price
+    return totalprice
 
 @app.route('/myorder', methods=['GET', 'POST'])
 def myorder():
@@ -127,7 +133,7 @@ def myorder():
         item.ordered = True
         item.orderdate = datetime.datetime.now()
     db.session.commit()
-    return render_template('myorder.html', myorder=myorder)
+    return render_template('myorder.html', myorder=myorder, totalprice=totalprice(myorder))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

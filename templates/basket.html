@@ -10,6 +10,7 @@
             <th class="text-center">User id</th>
             <th class="text-center">User</th>
             <th class='text-center'>Volume</th>
+            <th class='text-center'>Price</th>
             <th class='text-center'></th>
         </tr>
     </thead>
@@ -22,9 +23,20 @@
             <td>{{b.userid}}</td>
             <td>{{b.user.username}}</td>
             <td><input type="text" value={{b.volume}} size="1"></td>
+            <td>{{b.item.pricetags[0].price}},-</td>
             <td><a href="{{url_for('basket', deletion=b.id)}}" style="text-decoration: none"><big>&times;</big></a></td>
             </tr>
             {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>Total:</td>
+                <td>{{totalprice}},-</td>
+                <td></td>
+            </tr>
     </tbody>
 </table>
 
