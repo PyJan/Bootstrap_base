@@ -153,6 +153,8 @@ def myorder():
 def login():
     loginform = LoginForm()
     if loginform.validate_on_submit():
+        if loginform.username.data == 'admin' and loginform.password.data == 'vikinka':
+            return redirect(url_for('adminpage')) 
         user = User.query.filter_by(username=loginform.username.data).first()
         if user is None:
             loginform.username.errors.append('Wrong user name')
@@ -196,6 +198,10 @@ def loggedin():
 def showbase():
     signupform = SignupForm()
     return render_template('base.html', userform=signupform)
+
+@app.route('/adminpage')
+def adminpage():
+    return render_template('adminpage.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
