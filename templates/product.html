@@ -1,0 +1,8 @@
+{% extends 'vlab.html' %}
+{% block product %}
+You ended in product.html
+{{item.name}}
+{{item.desc}}
+{{item.imgref}}
+<a name='yellowlotion' id='yellowlotion' class="btn btn-primary btn-lg" href="{{url_for('basket', productid=item.item.id)}}" role="button">Put to basket</a>
+{% endblock %}

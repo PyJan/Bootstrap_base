@@ -56,7 +56,7 @@ class Orders(db.Model):
         )
 
 class Items(db.Model):
-    __items__ = 'items'
+    __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
 
@@ -65,6 +65,15 @@ class Items(db.Model):
     def __repr__(self):
         return '<item {0}: id={1}>'.format(self.name, self.id)
 
+class ItemsDesc(db.Model):
+    __tablename__ = 'itemsdesc'
+    id = db.Column(db.Integer, primary_key=True)
+    itemid = db.Column(db.Integer, db.ForeignKey('items.id'), nullable=False)
+    name = db.Column(db.String, nullable=False)
+    desc = db.Column(db.String)
+    imgref = db.Column(db.String)
+
+    item = db.relationship('Items', backref=db.backref('itemdesc', uselist=False))
 
 class Prices(db.Model):
     __tablename__ = 'prices'
@@ -93,16 +102,19 @@ def loaduser(userid):
 
 @app.route('/')
 def main():
-    return render_template('vlab.html')
+    items = ItemsDesc.query.all()
+    #print(items)
+    return render_template('vlab.html',items=items)
 
 @app.route('/selection/<product>')
 def selection(product):
-    return render_template('products/'+product+'.html')
+    item = ItemsDesc.query.get(int(product))
+    return render_template('product.html', item=item, items = ItemsDesc.query.all())
 
 @app.route('/basket', methods=['GET', 'POST'])
 def basket():
-    if request.args.get('product'):
-        chosen_product = Items.query.filter_by(name=request.args.get('product')).first()
+    if request.args.get('productid'):
+        chosen_product = Items.query.get(int(request.args.get('productid')))
         user = User.query.filter_by(id=current_user.id).first()
         issued_order = Orders(item=chosen_product, user=user, volume=1)
         db.session.add(issued_order)
@@ -115,7 +127,8 @@ def basket():
         Orders.userid==current_user.id,
         db.or_(Orders.ordered.is_(None),
         Orders.ordered==0)).all()
-    return render_template('basket.html', basket=basket, totalprice=totalprice(basket))
+    return render_template('basket.html', basket=basket, totalprice=totalprice(basket), 
+        items = ItemsDesc.query.all())
 
 def totalprice(basket):
     totalprice = 0
@@ -133,7 +146,8 @@ def myorder():
         item.ordered = True
         item.orderdate = datetime.datetime.now()
     db.session.commit()
-    return render_template('myorder.html', myorder=myorder, totalprice=totalprice(myorder))
+    return render_template('myorder.html', myorder=myorder, 
+        totalprice=totalprice(myorder), items = ItemsDesc.query.all())
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
