@@ -6,6 +6,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import length, email
 import datetime
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
@@ -15,6 +16,7 @@ bootstrap = Bootstrap(app)
 loginmanager = LoginManager()
 loginmanager.init_app(app)
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
