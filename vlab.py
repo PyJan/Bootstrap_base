@@ -7,6 +7,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import length, email
 import datetime
 from flask_migrate import Migrate
+from flask_script import Manager, Shell
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
@@ -17,6 +18,7 @@ loginmanager = LoginManager()
 loginmanager.init_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+manager = Manager(app)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
@@ -205,5 +207,12 @@ def showbase():
 def adminpage():
     return render_template('adminpage.html')
 
+def make_shell_context():
+    return dict(app=app, db=db, User=User, Orders=Orders, Items=Items, 
+                ItemsDesc=ItemsDesc)
+
+manager.add_command("shell", Shell(make_context=make_shell_context))
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    #app.run(debug=True)
+    manager.run()
