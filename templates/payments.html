@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Payments</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    {% extends 'bootstrap/base.html' %}
+    {% block content %}
+<form method="POST" action="{{url_for('payments')}}">
+    <input type="submit" class="btn btn-primary" name='Save changes' value="Save changes">
+    <table class="table table-hover table-condensed text-center">
+        <thead>
+        <tr>
+            <th class="text-center">Order id</th>
+            <th class="text-center">User</th>
+            <th class="text-center">Item</th>
+            <th class="text-center">Volume</th>
+            <th class="text-center">Ordered</th>
+            <th class="text-center">Paid</th>
+            <th class="text-center">Delivered</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>{{order.id}}</td>
+                <td>{{order.user.username}}</td>
+                <td>{{order.item.name}}</td>
+                <td>{{order.volume}}</td>
+                <td>{{order.ordered}}</td>
+                <td>
+                    {% if order.paid != True %}
+                    <input type="checkbox" value="{{order.id}}" name="paid">
+                    {% else %}
+                    <input type="checkbox" value="{{order.id}}" checked name="paid">
+                    {% endif %}
+                </td>
+                <td>{{order.delivered}}</td>  
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</form>
+    {% endblock content %}
+</body>
+</html>

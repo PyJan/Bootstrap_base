@@ -207,6 +207,19 @@ def showbase():
 def adminpage():
     return render_template('adminpage.html')
 
+@app.route('/payments', methods=['GET','POST'])
+def payments():
+    if request.method == 'POST':
+        print('posted')
+        print(request.form.getlist('paid'))
+        to_update = db.session.query(Orders).filter(
+            Orders.id.in_(request.form.getlist('paid'))).all()
+        for order in to_update:
+            order.paid = True
+        db.session.commit()
+    orders = Orders.query.all()
+    return render_template('payments.html', orders=orders)
+
 def make_shell_context():
     return dict(app=app, db=db, User=User, Orders=Orders, Items=Items, 
                 ItemsDesc=ItemsDesc)
