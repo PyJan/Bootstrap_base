@@ -3,11 +3,13 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import length, email
 import datetime
 from flask_migrate import Migrate
 from flask_script import Manager, Shell
+from werkzeug import secure_filename
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
@@ -99,6 +101,13 @@ class SignupForm(FlaskForm):
     email = StringField('Email: ', validators=[email(message='Not valid email address')])
     password = PasswordField('Password: ', validators=[length(min=5, max=30)])
     submit = SubmitField('Sign up')
+
+class InsertItem(FlaskForm):
+    internalname = StringField('Internal name: ', validators=[length(min=3)])
+    pagename = StringField('Page name: ', validators=[length(min=3)])
+    description = StringField('Description: ', validators=[length(min=3)])
+    picture = FileField('Load picture', validators=[FileRequired('No picture provided')])
+    submit = SubmitField('Save')
 
 @loginmanager.user_loader
 def loaduser(userid):
@@ -228,7 +237,14 @@ def payments():
 
 @app.route('/insertitem', methods=['GET','POST'])
 def insertitem():
-    return 'insert item page'    
+    print('in insert item')
+    insertitem = InsertItem()
+    print(insertitem)
+    if insertitem.validate_on_submit():
+        filename = secure_filename(insertitem.picture.data.filename)
+        insertitem.picture.data.save('static/' + filename)
+        return redirect(url_for('insertitem'))
+    return render_template('insertitem.html', form=insertitem)   
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Orders=Orders, Items=Items, 
