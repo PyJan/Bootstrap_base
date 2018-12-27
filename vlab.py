@@ -210,15 +210,25 @@ def adminpage():
 @app.route('/payments', methods=['GET','POST'])
 def payments():
     if request.method == 'POST':
-        print('posted')
-        print(request.form.getlist('paid'))
-        to_update = db.session.query(Orders).filter(
+        to_update_paid = db.session.query(Orders).filter(
             Orders.id.in_(request.form.getlist('paid'))).all()
-        for order in to_update:
+        for order in to_update_paid:
             order.paid = True
+            order.paydate = datetime.datetime.now()
         db.session.commit()
-    orders = Orders.query.all()
+        to_update_delivered = db.session.query(Orders).filter(
+            Orders.id.in_(request.form.getlist('delivered'))).all()
+        for order in to_update_delivered:
+            order.delivered = True
+            order.deliverydate = datetime.datetime.now()
+        db.session.commit()
+    orders = Orders.query.filter(db.or_(~Orders.paid.is_(True),
+                                ~Orders.delivered.is_(True))).all()
     return render_template('payments.html', orders=orders)
+
+@app.route('/insertitem', methods=['GET','POST'])
+def insertitem():
+    return 'insert item page'    
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Orders=Orders, Items=Items, 

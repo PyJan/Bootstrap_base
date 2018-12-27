@@ -38,7 +38,13 @@
                     <input type="checkbox" value="{{order.id}}" checked name="paid">
                     {% endif %}
                 </td>
-                <td>{{order.delivered}}</td>  
+                <td>
+                    {% if order.delivered != True %}
+                    <input type="checkbox" value="{{order.id}}" name="delivered">
+                    {% else %}
+                    <input type="checkbox" value="{{order.id}}" checked name="delivered">
+                    {% endif %}
+                </td>  
             </tr>
         {% endfor %}
         </tbody>
