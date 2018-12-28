@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Viki's Lab</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='main.css')}}">
 </head>
 <body>
     {% extends 'bootstrap/base.html' %}
@@ -21,7 +22,7 @@
             <ul class="nav nav-tabs nav-stacked">
                 {% for item in items %}
                     <li>
-                        <a href="{{url_for('selection', product=item.item.id)}}">{{item.name}}</a>
+                        <a href="{{url_for('selection', product=item.id)}}">{{item.name}}</a>
                     </li>
                 {% endfor %}
             </ul>

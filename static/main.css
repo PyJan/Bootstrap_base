@@ -6,3 +6,8 @@ a:hover {
 h1 {
     color: hotpink;
 }
+
+img {
+    max-width: 350;
+    max-height: 550;
+}

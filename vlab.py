@@ -4,7 +4,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, curren
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import length, email
 import datetime
 from flask_migrate import Migrate
@@ -105,7 +105,7 @@ class SignupForm(FlaskForm):
 class InsertItem(FlaskForm):
     internalname = StringField('Internal name: ', validators=[length(min=3)])
     pagename = StringField('Page name: ', validators=[length(min=3)])
-    description = StringField('Description: ', validators=[length(min=3)])
+    description = TextAreaField('Description: ')
     picture = FileField('Load picture', validators=[FileRequired('No picture provided')])
     submit = SubmitField('Save')
 
@@ -242,9 +242,28 @@ def insertitem():
     print(insertitem)
     if insertitem.validate_on_submit():
         filename = secure_filename(insertitem.picture.data.filename)
-        insertitem.picture.data.save('static/' + filename)
+        insertitem.picture.data.save('static/' + filename)  
+        item = Items(name=insertitem.internalname.data)
+        itemdesc = ItemsDesc(item=item, name=insertitem.pagename.data, 
+                            desc=insertitem.description.data, imgref=filename)
+        db.session.add(item)
+        db.session.add(itemdesc)
+        db.session.commit()
         return redirect(url_for('insertitem'))
-    return render_template('insertitem.html', form=insertitem)   
+    return render_template('insertitem.html', form=insertitem)
+
+@app.route('/deleteitem', methods=['GET','POST'])
+def deleteitem():
+    if 'deletion' in request.args:
+        itemdesc = ItemsDesc.query.get(request.args['deletion'])
+        item = Items.query.get(itemdesc.item.id)
+        db.session.delete(itemdesc)
+        db.session.commit()
+        db.session.delete(item)
+        db.session.commit()
+        return redirect(url_for('deleteitem'))
+    itemdescs = ItemsDesc.query.all()
+    return render_template('deleteitem.html', itemdescs=itemdescs)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Orders=Orders, Items=Items, 
