@@ -10,10 +10,17 @@ import datetime
 from flask_migrate import Migrate
 from flask_script import Manager, Shell
 from werkzeug import secure_filename
+import os
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///logins.db'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 
 bootstrap = Bootstrap(app)
 loginmanager = LoginManager()
@@ -21,6 +28,7 @@ loginmanager.init_app(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 manager = Manager(app)
+mail = Mail(app)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
