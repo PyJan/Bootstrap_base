@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Order confirmation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    Dear {{greetings}},
+    <br><br>
+    you have ordered following items:
+    <ul>
+        {% for item in myorder %}
+        <li>
+            {{item.volume}} {{item.item.name}} for {{item.item.pricetags[0].price}},-
+        </li>
+        {% endfor %}
+    </ul>
+    Total price: {{totalprice}},-. 
+    <br><br>
+    I'll contact you once I manufacture it.
+    <br><br>
+    Have a nice day!
+    <br><br>
+    Viki
+</body>
+</html>

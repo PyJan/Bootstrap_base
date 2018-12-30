@@ -10,3 +10,5 @@ python vlab.py shell # for interactive session
 export FLASK_APP=vlab
 flask db migrate -m "migration name"
 flask db upgrade
+
+- allow acces to apps in you Gmail security setting for mail sending

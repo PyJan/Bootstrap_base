@@ -11,7 +11,7 @@ from flask_migrate import Migrate
 from flask_script import Manager, Shell
 from werkzeug import secure_filename
 import os
-from flask_mail import Mail
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
@@ -167,6 +167,10 @@ def myorder():
         item.ordered = True
         item.orderdate = datetime.datetime.now()
     db.session.commit()
+    user = User.query.get(current_user.id)
+    greetings = user.username
+    sendmail(user.email, myorder=myorder, totalprice=totalprice(myorder),
+                                        greetings=greetings)
     return render_template('myorder.html', myorder=myorder, 
         totalprice=totalprice(myorder), items = ItemsDesc.query.all())
 
@@ -272,6 +276,14 @@ def deleteitem():
         return redirect(url_for('deleteitem'))
     itemdescs = ItemsDesc.query.all()
     return render_template('deleteitem.html', itemdescs=itemdescs)
+
+def sendmail(to, myorder, totalprice, greetings):
+    msg = Message("Viki's lab - order confimation", sender='pyjan3@gmail.com',
+                    recipients=[to])
+    msg.body = 'text body'
+    msg.html = render_template('emailtemplate.html', myorder=myorder, 
+                                totalprice=totalprice, greetings=greetings)
+    mail.send(msg)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Orders=Orders, Items=Items, 
