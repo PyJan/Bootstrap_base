@@ -10,10 +10,13 @@
     {% extends 'bootstrap/base.html' %}
     {% import 'bootstrap/wtf.html' as wtf %}
     {% block content %}
+    
     <div class="col-xs-3 col-xs-offset-4">
     <form method='POST' enctype="multipart/form-data" action="{{url_for('insertitem')}}">
         {{wtf.quick_form(form)}}
     </form>
+    <br>
+    <a href="{{url_for('adminpage')}}" class="btn btn-primary">Admin Menu</a>
     </div>
     {% endblock content %}
 </body>

@@ -124,7 +124,6 @@ def loaduser(userid):
 @app.route('/')
 def main():
     items = ItemsDesc.query.all()
-    #print(items)
     return render_template('vlab.html',items=items)
 
 @app.route('/selection/<product>')
@@ -179,6 +178,7 @@ def login():
     loginform = LoginForm()
     if loginform.validate_on_submit():
         if loginform.username.data == 'admin' and loginform.password.data == 'vikinka':
+            user = User(username='admin', password='vikinka', email='vikinka@seznam.cz')
             return redirect(url_for('adminpage')) 
         user = User.query.filter_by(username=loginform.username.data).first()
         if user is None:
