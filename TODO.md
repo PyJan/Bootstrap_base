@@ -1,0 +1,4 @@
+- DigitalOcean - put it production
+- login protection for user and admin
+- DB migration set up
+- item volume handling with JS
