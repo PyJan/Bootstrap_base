@@ -21,3 +21,11 @@ https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubunt
  systemctl status nginx
  sudo systemctl start nginx
  sudo systemctl stop nginx
+
+### test uwsgi
+
+uwsgi --socket 0.0.0.0:5000 --protocol=http -w wsgi:app
+
+### git cheat sheet
+
+https://www.digitalocean.com/community/tutorials/how-to-use-git-a-reference-guide
