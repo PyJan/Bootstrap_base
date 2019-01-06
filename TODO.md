@@ -2,3 +2,7 @@
 - login protection for user and admin
 - DB migration set up
 - item volume handling with JS
+- include wsgi file
+- list of used libraries for deployment
+- setup file (email on/off etc.)
+- learn git from shell
