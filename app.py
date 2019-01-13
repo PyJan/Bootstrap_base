@@ -114,6 +114,7 @@ class InsertItem(FlaskForm):
     internalname = StringField('Internal name: ', validators=[length(min=3)])
     pagename = StringField('Page name: ', validators=[length(min=3)])
     description = TextAreaField('Description: ')
+    price = StringField('Price: ')
     picture = FileField('Load picture', validators=[FileRequired('No picture provided')])
     submit = SubmitField('Save')
 
@@ -129,7 +130,9 @@ def main():
 @app.route('/selection/<product>')
 def selection(product):
     item = ItemsDesc.query.get(int(product))
-    return render_template('product.html', item=item, items = ItemsDesc.query.all())
+    price = Prices.query.filter_by(itemid=item.id).first()
+    return render_template('product.html', item=item, price=price, 
+                            items = ItemsDesc.query.all())
 
 @app.route('/basket', methods=['GET', 'POST'])
 def basket():
@@ -258,8 +261,10 @@ def insertitem():
         item = Items(name=insertitem.internalname.data)
         itemdesc = ItemsDesc(item=item, name=insertitem.pagename.data, 
                             desc=insertitem.description.data, imgref=filename)
+        price = Prices(item=item, price=int(insertitem.price.data))
         db.session.add(item)
         db.session.add(itemdesc)
+        db.session.add(price)
         db.session.commit()
         return redirect(url_for('insertitem'))
     return render_template('insertitem.html', form=insertitem)
@@ -269,6 +274,9 @@ def deleteitem():
     if 'deletion' in request.args:
         itemdesc = ItemsDesc.query.get(request.args['deletion'])
         item = Items.query.get(itemdesc.item.id)
+        price = Prices.query.get(itemdesc.item.id)
+        db.session.delete(price)
+        db.session.commit()
         db.session.delete(itemdesc)
         db.session.commit()
         db.session.delete(item)
