@@ -4,8 +4,8 @@
 style="float:left ">
 
 <h3>{{item.name}}</h3>
-{{item.desc}}
-
+{{item.desc}}<br>
+Price: {{price.price}},-
 <div style="clear:left">
 <a name='lotion' id='lotion' class="btn btn-primary btn-lg" 
 href="{{url_for('basket', productid=item.item.id)}}" role="button">Put to basket</a>
