@@ -1,8 +1,8 @@
 - DigitalOcean - put it production
 - login protection for user and admin
-- DB migration set up
-- item volume handling with JS
-- include wsgi file
-- list of used libraries for deployment
-- setup file (email on/off etc.)
-- learn git from shell
+- DB migration set up V
+- item volume handling with JS X
+- include wsgi file 
+- list of used libraries for deployment V
+- setup file (email on/off etc.) V
+- learn git from shell V
