@@ -136,6 +136,7 @@ def selection(product):
                             items = ItemsDesc.query.all())
 
 @app.route('/basket', methods=['GET', 'POST'])
+@login_required
 def basket():
     if request.args.get('productid'):
         chosen_product = Items.query.get(int(request.args.get('productid')))
