@@ -1,4 +1,6 @@
-## set up SSH key (Secure Shell, 2 keys - public key, private key; challenge-response authorization)
+## set up SSH key (Secure Shell, 2 keys - public key, private key; challenge-response authorization, on Windows they use PuTTY)
+
+https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys
 
 ssh-keygen # generate keys
 la .ssh # see the keys
