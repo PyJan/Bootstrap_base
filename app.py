@@ -12,7 +12,7 @@ from flask_script import Manager, Shell
 from werkzeug import secure_filename
 import os
 from flask_mail import Mail, Message
-import config
+from config.config import USE_MAIL
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
@@ -173,7 +173,7 @@ def myorder():
     db.session.commit()
     user = User.query.get(current_user.id)
     greetings = user.username
-    if config.USE_MAIL:
+    if USE_MAIL:
         sendmail(user.email, myorder=myorder, totalprice=totalprice(myorder),
                                             greetings=greetings)
     return render_template('myorder.html', myorder=myorder, 
