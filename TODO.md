@@ -1,8 +1,6 @@
-- DigitalOcean - put it production
 - login protection for user and admin
-- DB migration set up V
-- item volume handling with JS X
-- include wsgi file 
-- list of used libraries for deployment V
-- setup file (email on/off etc.) V
-- learn git from shell V
+- item volume handling with JS
+- force user to sign in
+- get rid of warning message when typing password
+- sign up alongside with log in for not signed in users
+- double check password during sign up
