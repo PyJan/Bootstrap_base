@@ -12,7 +12,7 @@ from flask_script import Manager, Shell
 from werkzeug import secure_filename
 import os
 from flask_mail import Mail, Message
-from config.config import USE_MAIL
+from .config.config import USE_MAIL
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
