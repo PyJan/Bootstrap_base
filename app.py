@@ -1,3 +1,5 @@
+import sys
+sys.path.append('/home/PyJan/myproject/Bootstrap_base')
 from flask import Flask, request, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
@@ -12,7 +14,7 @@ from flask_script import Manager, Shell
 from werkzeug import secure_filename
 import os
 from flask_mail import Mail, Message
-from .config.config import USE_MAIL
+from config.config import USE_MAIL
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'

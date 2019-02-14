@@ -12,3 +12,8 @@ flask db migrate -m "migration name"
 flask db upgrade
 
 - allow acces to apps in you Gmail security setting for mail sending
+
+- add package to PYTHONPATH environment variable
+echo $PYTHONPATH
+echo export PYTHONPATH="/HOME/jan/Bootstrap_base" >> ~/.bashrc
+source ~/.bashrc
