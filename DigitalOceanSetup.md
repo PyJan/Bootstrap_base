@@ -37,3 +37,9 @@ https://www.digitalocean.com/community/tutorials/how-to-use-git-a-reference-guid
 https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04
 
 https://help.ubuntu.com/community/PostgreSQL
+
+https://www.depesz.com/2007/10/04/ident/
+
+## flask_migrate, use this environment variable before any flask command!
+
+export FLASK_APP=app.py
