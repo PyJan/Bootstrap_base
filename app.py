@@ -18,7 +18,7 @@ from config.config import USE_MAIL
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///logins.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sammy:sammy@localhost:5432/sammy'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
