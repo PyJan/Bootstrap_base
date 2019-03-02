@@ -15,6 +15,7 @@ from werkzeug import secure_filename
 import os
 from flask_mail import Mail, Message
 from config.config import USE_MAIL
+from logging import FileHandler, WARNING
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fuckoffyouhackers112'
@@ -32,6 +33,11 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 manager = Manager(app)
 mail = Mail(app)
+
+if app.debug == False:
+    file_handler = FileHandler('errors_file.txt')
+    file_handler.setLevel(WARNING)
+    app.logger.addHandler(file_handler)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
@@ -59,9 +65,9 @@ class Orders(db.Model):
     ordered = db.Column(db.Boolean)
     paid = db.Column(db.Boolean)
     delivered = db.Column(db.Boolean)
-    orderdate = db.Column(db.DATETIME)
-    paydate = db.Column(db.DATETIME)
-    deliverydate = db.Column(db.DATETIME)
+    orderdate = db.Column(db.TIMESTAMP)
+    paydate = db.Column(db.TIMESTAMP)
+    deliverydate = db.Column(db.TIMESTAMP)
 
 
     def __repr__(self):
@@ -97,8 +103,8 @@ class Prices(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     itemid = db.Column(db.Integer, db.ForeignKey('items.id'), nullable=False)
     price = db.Column(db.Integer)
-    validfrom = db.Column(db.DATETIME)
-    validto = db.Column(db.DATETIME)
+    validfrom = db.Column(db.TIMESTAMP)
+    validto = db.Column(db.TIMESTAMP)
 
     item = db.relationship('Items', backref='pricetags')
 

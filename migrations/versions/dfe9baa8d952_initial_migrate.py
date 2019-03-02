@@ -1,8 +1,8 @@
-"""initial migration
+"""initial migrate
 
-Revision ID: 106aa899322a
+Revision ID: dfe9baa8d952
 Revises: 
-Create Date: 2019-01-11 22:55:25.794161
+Create Date: 2019-03-02 22:56:26.496355
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '106aa899322a'
+revision = 'dfe9baa8d952'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -48,9 +48,9 @@ def upgrade():
     sa.Column('ordered', sa.Boolean(), nullable=True),
     sa.Column('paid', sa.Boolean(), nullable=True),
     sa.Column('delivered', sa.Boolean(), nullable=True),
-    sa.Column('orderdate', sa.DATETIME(), nullable=True),
-    sa.Column('paydate', sa.DATETIME(), nullable=True),
-    sa.Column('deliverydate', sa.DATETIME(), nullable=True),
+    sa.Column('orderdate', sa.TIMESTAMP(), nullable=True),
+    sa.Column('paydate', sa.TIMESTAMP(), nullable=True),
+    sa.Column('deliverydate', sa.TIMESTAMP(), nullable=True),
     sa.ForeignKeyConstraint(['itemid'], ['items.id'], ),
     sa.ForeignKeyConstraint(['userid'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -59,8 +59,8 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('itemid', sa.Integer(), nullable=False),
     sa.Column('price', sa.Integer(), nullable=True),
-    sa.Column('validfrom', sa.DATETIME(), nullable=True),
-    sa.Column('validto', sa.DATETIME(), nullable=True),
+    sa.Column('validfrom', sa.TIMESTAMP(), nullable=True),
+    sa.Column('validto', sa.TIMESTAMP(), nullable=True),
     sa.ForeignKeyConstraint(['itemid'], ['items.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
