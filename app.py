@@ -159,7 +159,7 @@ def basket():
     basket = Orders.query.filter(
         Orders.userid==current_user.id,
         db.or_(Orders.ordered.is_(None),
-        Orders.ordered==0)).all()
+        Orders.ordered.is_(False))).all()
     return render_template('basket.html', basket=basket, totalprice=totalprice(basket), 
         items = ItemsDesc.query.all())
 
