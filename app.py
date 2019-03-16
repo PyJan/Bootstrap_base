@@ -174,7 +174,7 @@ def myorder():
     myorder = Orders.query.filter(
         Orders.userid==current_user.id,
         db.or_(Orders.ordered.is_(None),
-        Orders.ordered==0)).all()
+        Orders.ordered.is_(False))).all()
     for item in myorder:
         item.ordered = True
         item.orderdate = datetime.datetime.now()
